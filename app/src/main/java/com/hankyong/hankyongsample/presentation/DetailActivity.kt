@@ -7,7 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.hankyong.hankyongsample.databinding.ActivityDetailBinding
-import com.hankyong.hankyongsample.model.SomeInfoDetail
+import com.hankyong.hankyongsample.model.ItemData
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -18,7 +18,7 @@ class DetailActivity @Inject constructor() : AppCompatActivity() {
         private const val EXTRA_DETAIL_DATA = "EXTRA_DETAIL_DATA"
 
         //Todo 상세 화면에서 표시할 '상세 정보 데이터'를 이전 화면에서 전달 받아 사용한다. SomeInfoDetail.
-        fun start(activity: Activity, detail: SomeInfoDetail) {
+        fun start(activity: Activity, detail: ItemData) {
             Intent(activity, DetailActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
@@ -32,7 +32,7 @@ class DetailActivity @Inject constructor() : AppCompatActivity() {
     private lateinit var mContext: Context
     private lateinit var binding: ActivityDetailBinding
 
-    private val someInfoDetail: SomeInfoDetail? by lazy {
+    private val itemData: ItemData? by lazy {
         intent.getParcelableExtra(EXTRA_DETAIL_DATA)
     }
 
@@ -44,7 +44,7 @@ class DetailActivity @Inject constructor() : AppCompatActivity() {
         setContentView(binding.root)
 
         //Todo 전달 받은 상세 정도 데이터가 null 이면, 사용자에게 얼럿을 보여주고, DetailActivity 를 종료 합니다.
-        if (someInfoDetail == null) {
+        if (itemData == null) {
             AlertDialog.Builder(mContext)
                 .setTitle("죄송합니다")
                 .setMessage("데이터를 제대로 가져오지 못했습니다.")
@@ -59,6 +59,6 @@ class DetailActivity @Inject constructor() : AppCompatActivity() {
 
     //Todo 데이터를 UI 와 연결하세요.
     private fun setDataToUI() {
-        binding.tvSample.text = someInfoDetail?.someFirstInfo
+        binding.tvSample.text = itemData?.weatherNm
     }
 }

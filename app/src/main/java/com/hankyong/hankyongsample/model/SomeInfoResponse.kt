@@ -4,35 +4,46 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
-//Todo 사용하려는 공공 api 에 맞춰 수정하여 사용.
-// JobInfoResponse.kt 파일을 참고.
 data class SomeInfoResponse(
+    @SerializedName("header")
+    val header: HeaderData,
+    @SerializedName("body")
+    val body: BodyData,
+)
 
-    //Todo 예시 응답 값..
-    @SerializedName("list_total_count")
-    val listTotalCount: Int,
-
-    @SerializedName("list")
-    val someInfoDetailList: List<SomeInfoDetail>,
-
-    //Todo 여기에 데이터들을 추가..
+data class HeaderData(
+    @SerializedName("resultCode")
+    val resultCode: String,
+    @SerializedName("resultMsg")
+    val resultMsg: String,
 )
 
 @Parcelize
-data class SomeInfoDetail(
+data class BodyData(
+    @SerializedName("dataType")
+    val dataType: String,
+    @SerializedName("pageNo")
+    val pageNo: Int,
+    @SerializedName("numOfRows")
+    val numOfRows: Int,
+    @SerializedName("totalCount")
+    val totalCount: Int,
+    @SerializedName("items")
+    val item: ItemsData,
+) : Parcelable
 
-    //Todo 첫번째 데이터 예시.
-    @SerializedName("some_first_info")
-    val someFirstInfo: String,
+@Parcelize
+data class ItemsData(
+    @SerializedName("item")
+    val items: List<ItemData>,
+) : Parcelable
 
-    //Todo 두번째 데이터 예시.
-    @SerializedName("some_second_info")
-    val someSecondInfo: String,
-
-
-
-
-
-
-    //Todo 여기에 데이터들을 추가..
+@Parcelize
+data class ItemData(
+    @SerializedName("baseDate")
+    val baseDate: String,
+    @SerializedName("baseTime")
+    val baseTime: String,
+    @SerializedName("weatherNm")
+    val weatherNm: String,
 ) : Parcelable

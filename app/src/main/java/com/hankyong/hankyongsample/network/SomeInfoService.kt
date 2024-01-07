@@ -1,18 +1,10 @@
 package com.hankyong.hankyongsample.network
 
-import com.hankyong.hankyongsample.model.SomeInfoRequest
-import com.hankyong.hankyongsample.model.SomeInfoResponse
-import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.POST
 import retrofit2.http.Query
 import javax.inject.Inject
 
-//Todo 사용하려는 공공 api 에 맞춰 수정하여 사용.
-// JobInfoService.kt 파일을 참고.
-// JobInfoService 와 달리 POST 로 요청하며, SomeInfoRequest 객체를 사용함에 주의.
 interface SomeInfoService {
 
     companion object {
@@ -26,13 +18,13 @@ interface SomeInfoService {
 
     @GET(REQUEST_GET_LIST_URL)
     suspend fun getSomeInfoList(
-        @Query("ServiceKey") key: String,
-        @Query("pageNo") pageNo: Int,
-        @Query("numOfRows") numOfRows: Int,
-        @Query("datatype") datatype: String,
-        @Query("eqmtId") eqmtId: String,
-        @Query("hhCode") hhCode: String
-    ): Response<SomeInfoResponse>
+        @Query("ServiceKey", encoded = true) key: String,
+        @Query("pageNo", encoded = true) pageNo: Int,
+        @Query("numOfRows", encoded = true) numOfRows: Int,
+        @Query("dataType", encoded = true) datatype: String,
+        @Query("eqmtId", encoded = true) eqmtId: String,
+        @Query("hhCode", encoded = true) hhCode: String
+    ): BaseResponse
 }
 
 class SomeInfoServiceImpl @Inject constructor(retrofit: Retrofit) : SomeInfoService {
@@ -47,7 +39,7 @@ class SomeInfoServiceImpl @Inject constructor(retrofit: Retrofit) : SomeInfoServ
         datatype: String,
         eqmtId: String,
         hhCode: String
-    ): Response<SomeInfoResponse> {
+    ): BaseResponse {
         return api.getSomeInfoList(key, pageNo, numOfRows, datatype, eqmtId, hhCode)
     }
 }

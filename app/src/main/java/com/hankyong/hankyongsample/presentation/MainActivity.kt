@@ -48,9 +48,9 @@ class MainActivity @Inject constructor() : AppCompatActivity() {
         binding.rcvListSample.apply {
             adapter = listAdapter.apply {
                 //Todo 리스트 아이템 클릭이 발생했을 때 동작 리스너.
-                onItemClickListener = { someInfoDetail ->
+                onItemClickListener = { itemDetail ->
                     //Todo 예제에서는 DetailActivit 를 호출.
-                    DetailActivity.start(this@MainActivity, someInfoDetail)
+                    DetailActivity.start(this@MainActivity, itemDetail)
                 }
             }
         }
@@ -77,9 +77,9 @@ class MainActivity @Inject constructor() : AppCompatActivity() {
         }
 
         //Todo 리스트의 데이터가 변경되는 것에 대한 처리.
-        viewModel.someInfoList.observe(this) { someInfoList ->
+        viewModel.itemList.observe(this) { itemList ->
             listAdapter.run {
-                submitListAndScroll(someInfoList) {
+                submitListAndScroll(itemList) {
                     binding.rcvListSample.smoothScrollToPosition(this.itemCount)
                 }
             }

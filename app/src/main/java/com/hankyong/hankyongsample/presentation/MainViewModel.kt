@@ -5,9 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hankyong.hankyongsample.common.AppConstant
-import com.hankyong.hankyongsample.model.SomeInfoDetail
-import com.hankyong.hankyongsample.model.SomeInfoRequest
-import com.hankyong.hankyongsample.model.SomeInfoResponse
+import com.hankyong.hankyongsample.model.ItemData
 import com.hankyong.hankyongsample.network.SomeInfoRepository
 import com.hankyong.hankyongsample.network.onException
 import com.hankyong.hankyongsample.network.onSuccess
@@ -30,15 +28,15 @@ class MainViewModel @Inject constructor() : ViewModel() {
         get() = _isLoading
     
     //Todo 앱에서 처리하려는 공공 api 응답값의 리스트.
-    private val _someInfoList = MutableLiveData<List<SomeInfoDetail>>()
-    val someInfoList: LiveData<List<SomeInfoDetail>>
-        get() = _someInfoList
+    private val _itemList = MutableLiveData<List<ItemData>>()
+    val itemList: LiveData<List<ItemData>>
+        get() = _itemList
 
     fun requestSomeInfo(
         //Todo 화면에서 전달 받아야 하는 공공 api 요청에 핅요한 값이 있으면 여기를 통해 전달.
     ) {
-        val tempList = mutableListOf<SomeInfoDetail>()
-        someInfoList.value?.let {
+        val tempList = mutableListOf<ItemData>()
+        itemList.value?.let {
             tempList.addAll(it)
         }
 
@@ -61,8 +59,11 @@ class MainViewModel @Inject constructor() : ViewModel() {
 
                 result.onSuccess {
                     //Todo 공공 api 요청이 성공하여 데이터를 정상적으로 수신하였을 때, 데이터를 처리.
+                    val itemCount = it.body.totalCount
+                    Timber.d("itemCount: $itemCount")
                 }.onException {
                     //Todo 공공 api 요청에 실패하였을 때 사용자에게 알림 등 UI 처리 진행.
+                    Timber.e(it.toString())
                 }
 
             } catch (e: Exception) {

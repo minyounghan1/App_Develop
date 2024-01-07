@@ -8,7 +8,6 @@ import timber.log.Timber
 import javax.inject.Inject
 
 //Todo 사용하려는 공공 api 에 맞춰 수정하여 사용.
-// JobInfoRepository.kt 파일을 참고.
 interface SomeInfoRepository {
 
     suspend fun getSomeInfoList( key: String,
@@ -32,17 +31,18 @@ class SomeInfoRepositoryImpl @Inject constructor(
         return request(
             service.getSomeInfoList(key,pageNo,numOfRows,datatype,eqmtId,hhCode
             )
-        ) { it }
+        )
     }
 
     //Todo 요청 응답에 대한 전처리. 데이터의 형태와 처리 방식에 따라 수정이 필요함...
-    private fun <T, R> request(
-        response: Response<T>,
-        transform: (T) -> R,
-    ): Result<R, Exception> {
+    private fun request(
+        response: BaseResponse,
+//        transform: (T) -> R,
+    ): Result<SomeInfoResponse, Exception> {
         return try {
-            if (response.isSuccessful && response.body() != null) {
-                Result.Success(transform(response.body()!!))
+            val resultCode = response.response.header.resultCode
+            if (resultCode == "00") {
+                Result.Success(response.response)
             } else {
                 Result.Error(Exception("Fail to retrieve data."))
             }
