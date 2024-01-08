@@ -7,37 +7,39 @@ import retrofit2.http.Query
 import timber.log.Timber
 import javax.inject.Inject
 
-//Todo 사용하려는 공공 api 에 맞춰 수정하여 사용.
 interface SomeInfoRepository {
 
-    suspend fun getSomeInfoList( key: String,
-                                pageNo: Int,
-                                numOfRows: Int,
-                                datatype: String,
-                                eqmtId: String,
-                                hhCode: String ): Result<SomeInfoResponse, Exception>
+    suspend fun getSomeInfoList(
+        key: String,
+        pageNo: Int,
+        numOfRows: Int,
+        datatype: String,
+        eqmtId: String,
+        hhCode: String
+    ): Result<SomeInfoResponse, Exception>
 
 }
 
 class SomeInfoRepositoryImpl @Inject constructor(
     private val service: SomeInfoService,
-): SomeInfoRepository {
-    override suspend fun getSomeInfoList( key: String,
-                                         pageNo: Int,
-                                         numOfRows: Int,
-                                         datatype: String,
-                                         eqmtId: String,
-                                         hhCode: String ): Result<SomeInfoResponse, Exception> {
+) : SomeInfoRepository {
+    override suspend fun getSomeInfoList(
+        key: String,
+        pageNo: Int,
+        numOfRows: Int,
+        datatype: String,
+        eqmtId: String,
+        hhCode: String
+    ): Result<SomeInfoResponse, Exception> {
         return request(
-            service.getSomeInfoList(key,pageNo,numOfRows,datatype,eqmtId,hhCode
+            service.getSomeInfoList(
+                key, pageNo, numOfRows, datatype, eqmtId, hhCode
             )
         )
     }
 
-    //Todo 요청 응답에 대한 전처리. 데이터의 형태와 처리 방식에 따라 수정이 필요함...
     private fun request(
         response: BaseResponse,
-//        transform: (T) -> R,
     ): Result<SomeInfoResponse, Exception> {
         return try {
             val resultCode = response.response.header.resultCode
@@ -46,6 +48,9 @@ class SomeInfoRepositoryImpl @Inject constructor(
             } else {
                 Result.Error(Exception("Fail to retrieve data."))
             }
+            //Todo resultCode 에 따른 처리를 UI 에서 하려면, 위 코드 예시 처럼
+            // resultCode == "00" 으로 사용하지 말고,
+            // if (response.response != null) 로 사용 하세요..
         } catch (exception: Exception) {
             Timber.e(exception.toString())
             Result.Error(exception)

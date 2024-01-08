@@ -59,7 +59,13 @@ class MainViewModel @Inject constructor() : ViewModel() {
 
                 result.onSuccess {
                     //Todo 공공 api 요청이 성공하여 데이터를 정상적으로 수신하였을 때, 데이터를 처리.
-                    val itemCount = it.body.totalCount
+                    // 여기에서 데이터를 처리하여 UI 에 표시하세요. 아래는 예시입니다.
+                    val itemCount = it.body.totalCount //데이터의 개수. 화면에 표시하려면 LiveData 로 선언해서 사용.
+
+                    //item list 의 value 를 변경 하여 observer 에게 알림.
+                    tempList.addAll(it.body.item.items)
+                    _itemList.value = tempList
+
                     Timber.d("itemCount: $itemCount")
                 }.onException {
                     //Todo 공공 api 요청에 실패하였을 때 사용자에게 알림 등 UI 처리 진행.

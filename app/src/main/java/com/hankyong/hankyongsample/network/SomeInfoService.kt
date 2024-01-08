@@ -11,11 +11,6 @@ interface SomeInfoService {
         private const val REQUEST_GET_LIST_URL = "getCctvStnRoadWthr" //rest api url 예시..
     }
 
-//    @GET(REQUEST_GET_LIST_URL)
-//    suspend fun getSomeInfoList(
-//        @Body request: SomeInfoRequest,
-//    ): Response<SomeInfoResponse>
-
     @GET(REQUEST_GET_LIST_URL)
     suspend fun getSomeInfoList(
         @Query("ServiceKey", encoded = true) key: String,
