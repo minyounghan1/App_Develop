@@ -10,6 +10,7 @@ import com.hankyong.hankyongsample.databinding.ActivityMainBinding
 import com.hankyong.hankyongsample.presentation.adapters.SomeInfoListAdapter
 import com.hankyong.hankyongsample.presentation.dialogs.LoadingDialog
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -42,6 +43,8 @@ class MainActivity @Inject constructor() : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        Timber.d("json log.")
 
 
         //Todo 리스트뷰에 데이터를 담당하는 어덥터를 셋팅하고, 아이템 클릭이 발생했을 때 처리를 설정.
